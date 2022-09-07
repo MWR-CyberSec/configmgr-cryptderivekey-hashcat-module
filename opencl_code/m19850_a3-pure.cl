@@ -1,5 +1,5 @@
 /**
- * Author......: See docs/credits.txt
+ * Author......: Christopher Panayi, MWR CyberSec
  * License.....: MIT
  */
 
