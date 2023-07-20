@@ -4,15 +4,15 @@
  */
 
 #ifdef KERNEL_STATIC
-#include "inc_vendor.h"
-#include "inc_types.h"
-#include "inc_platform.cl"
-#include "inc_common.cl"
-#include "inc_rp.h"
-#include "inc_rp.cl"
-#include "inc_hash_sha1.cl"
-#include "inc_cipher_aes.cl"
-#include "inc_scalar.cl"
+#include M2S(INCLUDE_PATH/inc_vendor.h)
+#include M2S(INCLUDE_PATH/inc_types.h)
+#include M2S(INCLUDE_PATH/inc_platform.cl)
+#include M2S(INCLUDE_PATH/inc_common.cl)
+#include M2S(INCLUDE_PATH/inc_rp.h)
+#include M2S(INCLUDE_PATH/inc_rp.cl)
+#include M2S(INCLUDE_PATH/inc_hash_sha1.cl)
+#include M2S(INCLUDE_PATH/inc_cipher_aes.cl)
+#include M2S(INCLUDE_PATH/inc_scalar.cl)
 #endif
 
 //CryptDeriveKey is basically sha1hmac if the input is forced to be greater than 64. Based on the code from sha1_hmac_init_vector and ipad from sha1_hmac_init_vector_64. 
@@ -141,7 +141,7 @@ KERNEL_FQ void m19850_mxx (KERN_ATTR_BASIC())
 
   #endif
 
-  if (gid >= gid_max) return;
+  if (gid >= GID_CNT) return;
 
   //First call to sha1_update_global_utf16le_swap for the left hand side password (pws)
   sha1_ctx_t tmp;
@@ -154,7 +154,7 @@ KERNEL_FQ void m19850_mxx (KERN_ATTR_BASIC())
    * loop
    */
 
-  for (u32 il_pos = 0; il_pos < il_cnt; il_pos++)
+  for (u32 il_pos = 0; il_pos < IL_CNT; il_pos++)
   {
     sha1_hmac_ctx_t sha1_hmac_ctx;
     sha1_ctx_t pwsorig = tmp; //Make a copy of the existing sha1_ctx_t object already calculated for pws, per loop iteration
@@ -252,14 +252,14 @@ KERNEL_FQ void m19850_sxx (KERN_ATTR_BASIC())
 
   #endif
 
-  if (gid >= gid_max) return;
+  if (gid >= GID_CNT) return;
 
   const u32 search[4] =
   {
-    digests_buf[DIGESTS_OFFSET].digest_buf[DGST_R0],
-    digests_buf[DIGESTS_OFFSET].digest_buf[DGST_R1],
-    digests_buf[DIGESTS_OFFSET].digest_buf[DGST_R2],
-    digests_buf[DIGESTS_OFFSET].digest_buf[DGST_R3]
+    digests_buf[DIGESTS_OFFSET_HOST].digest_buf[DGST_R0],
+    digests_buf[DIGESTS_OFFSET_HOST].digest_buf[DGST_R1],
+    digests_buf[DIGESTS_OFFSET_HOST].digest_buf[DGST_R2],
+    digests_buf[DIGESTS_OFFSET_HOST].digest_buf[DGST_R3]
   };
 
   sha1_ctx_t tmp;
@@ -272,7 +272,7 @@ KERNEL_FQ void m19850_sxx (KERN_ATTR_BASIC())
    * loop
    */
 
-  for (u32 il_pos = 0; il_pos < il_cnt; il_pos++)
+  for (u32 il_pos = 0; il_pos < IL_CNT; il_pos++)
   {
     sha1_hmac_ctx_t sha1_hmac_ctx;    
     sha1_ctx_t pwsorig = tmp;
